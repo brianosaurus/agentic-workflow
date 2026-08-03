@@ -1,0 +1,10 @@
+Follow CLAUDE.md.
+
+Execute Stage 1 only.
+
+Read README.md and inspect the repository, then create PROJECT_PLAN.md with
+explicit behavior and invariant tables.
+
+Do not invoke Codex and do not implement anything.
+
+Stop after PROJECT_PLAN.md is complete so I can review it.

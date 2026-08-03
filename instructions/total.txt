@@ -1,0 +1,7 @@
+Plan approval
+Review approval
+Updated-plan approval
+Build
+Test
+Independent checklist
+Verification

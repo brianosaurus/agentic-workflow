@@ -1,0 +1,8 @@
+ADVERSARIAL_REVIEW.md is approved for consideration.
+
+Execute Stage 3 only.
+
+Create UPDATED_PROJECT_PLAN.md. Include a disposition for every adversarial
+finding and retain explicit behavior and invariant tables.
+
+Do not implement anything. Stop for my review.
