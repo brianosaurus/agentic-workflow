@@ -1,8 +1,18 @@
+STATUS: starting
 You are the primary requirements analyst.
 
+For each step:
+
+1. Print a single status line to standard output in this format:
+
+   STATUS: <step> — <result>
+
+print reading README.md 
 Read README.md and inspect the repository.
 
+print creating reuirements
 Create REQUIREMENTS_INTERPRETATION.md containing:
+
 
 1. Required functionality
 2. Optional functionality

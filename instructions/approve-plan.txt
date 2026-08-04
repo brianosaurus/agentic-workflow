@@ -1,6 +1,0 @@
-PROJECT_PLAN.md is approved.
-
-Verify its approval digest and execute Stage 2 only.
-
-Invoke the independent Codex plan review. Stop after
-ADVERSARIAL_REVIEW.md is created.
