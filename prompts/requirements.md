@@ -1,18 +1,13 @@
-STATUS: starting
 You are the primary requirements analyst.
 
-For each step:
+Print one status line per step, in the form:
 
-1. Print a single status line to standard output in this format:
+STATUS: <step> — <result>
 
-   STATUS: <step> — <result>
+Read README.md and inspect the repository. Issue the reads and searches you
+need as parallel tool calls in a single message rather than one at a time.
 
-print reading README.md 
-Read README.md and inspect the repository.
-
-print creating reuirements
 Create REQUIREMENTS_INTERPRETATION.md containing:
-
 
 1. Required functionality
 2. Optional functionality
@@ -29,6 +24,8 @@ Use a behavior table:
 
 | ID | Trigger | Expected result | Failure behavior | Verification |
 |---|---|---|---|---|
+
+Write the document in a single Write call. Do not draft it in chat first.
 
 Do not design the architecture.
 Do not implement code.

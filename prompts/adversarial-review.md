@@ -47,4 +47,10 @@ End with:
 4. Recommended implementation order
 5. Overall assessment
 
+Keep each field to what it needs. Cite plan sections and requirement
+identifiers rather than quoting them back. The closing sections are lists of
+finding IDs, not restatements. Do not manufacture findings to fill the
+categories above — a category with nothing real in it gets one line saying so.
+A short review of genuine defects is worth more than a long one padded out.
+
 Return only the review.

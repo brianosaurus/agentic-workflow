@@ -5,12 +5,15 @@ Read:
 - README.md
 - REQUIREMENTS_INTERPRETATION.md
 - UPDATED_PROJECT_PLAN.md
-- source code;
-- tests;
 - AUTOMATED_TEST_REPORT.md;
 - MANUAL_CHECKLIST.md;
 - VERIFICATION_REPORT.md;
-- DEFECTS.md, if present.
+- DEFECTS.md, if present;
+- the source and tests behind the claims you are auditing.
+
+Read the reports first and let them direct you into the code: open the test a
+PASS claim rests on, the code path an invariant is enforced in, the failure
+path nobody exercised. A sweep of the whole tree is not the job.
 
 Do not modify source code.
 
@@ -33,6 +36,10 @@ For each finding include:
 - Affected requirement or invariant
 - Required correction
 - Whether it blocks completion
+
+Report only findings. Do not summarize the implementation, restate the plan, or
+list what is correct — an empty findings list is the right output for a clean
+audit. Evidence is the file, line, and the text that proves the point.
 
 End with one conclusion:
 
