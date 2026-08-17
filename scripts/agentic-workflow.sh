@@ -21,6 +21,14 @@ mkdir -p "$APPROVAL_DIR" "$LOG_DIR" "$SPEC_DIR"
 # clock, or you habitually edit documents during review, set this to 0.
 WORKFLOW_SPECULATE="${WORKFLOW_SPECULATE:-1}"
 
+# Agent/reviewer CLI commands. Defaults are `claude` and `codex`. Swap either
+# for a compatible CLI or a wrapper script. The agent CLI must accept the same
+# flags as `claude -p` (model, effort, max-turns, output-format stream-json,
+# allowedTools, stdin prompt). The reviewer CLI must accept the same flags as
+# `codex exec` (ephemeral, sandbox read-only, model, output-last-message).
+AGENT_CMD="${WORKFLOW_AGENT_CMD:-claude}"
+REVIEWER_CMD="${WORKFLOW_REVIEWER_CMD:-codex}"
+
 # Per-stage model and reasoning effort, keyed by log name. Planning and
 # implementation carry the design; requirements extraction and checklist
 # execution are closer to transcription, so they do not need the top tier.
@@ -250,13 +258,13 @@ run_claude() {
     require_file "$prompt_file"
 
     echo
-    echo "Launching Claude: $log_name"
+    echo "Launching agent ($AGENT_CMD): $log_name"
     echo "Model: $model (effort: $effort, max turns: $turns)"
     echo "Tools: $tools"
     echo
 
-    # Plain `claude -p` buffers the entire session and prints nothing until it
-    # exits, which is indistinguishable from a hang. Stream events instead.
+    # Plain `$AGENT_CMD -p` buffers the entire session and prints nothing until
+    # it exits, which is indistinguishable from a hang. Stream events instead.
     #
     # The prompt goes in on stdin, not as a positional argument: --allowedTools
     # is variadic and silently swallows a trailing prompt argument, which fails
@@ -266,7 +274,7 @@ run_claude() {
     # needs one, and skipping them removes both server startup and their tool
     # schemas from every request.
     local status=0
-    claude -p \
+    "$AGENT_CMD" -p \
         --model "$model" \
         --effort "$effort" \
         --strict-mcp-config \
@@ -280,7 +288,7 @@ run_claude() {
         | format_claude_stream || status=$?
 
     if [[ "$status" -ne 0 ]]; then
-        echo "Claude exited with status $status."
+        echo "Agent ($AGENT_CMD) exited with status $status."
         echo "Raw event log: $LOG_DIR/${log_name}.jsonl"
         exit "$status"
     fi
@@ -294,10 +302,10 @@ run_codex_review() {
     require_file "$prompt_file"
 
     echo
-    echo "Launching Codex: $log_name"
+    echo "Launching reviewer ($REVIEWER_CMD): $log_name"
 
-    # Keep the reviewer read-only. The shell writes Codex's final message
-    # into the designated review artifact.
+    # Keep the reviewer read-only. The shell writes the reviewer's final
+    # message into the designated review artifact.
     local model_args=()
     local model
     model="$(stage_setting MODEL "$log_name" "${CODEX_MODEL:-}")"
@@ -306,7 +314,7 @@ run_codex_review() {
         echo "Model: $model"
     fi
 
-    codex exec \
+    "$REVIEWER_CMD" exec \
         --ephemeral \
         --sandbox read-only \
         "${model_args[@]+"${model_args[@]}"}" \

@@ -37,18 +37,18 @@ approve_file() {
 case "${1:-}" in
     approve-plan)
         approve_file PROJECT_PLAN.md PROJECT_PLAN
-        echo "Next: ask Claude to run Stage 2."
+        echo "Next: ask the agent to run Stage 2."
         ;;
 
     approve-review)
         approve_file ADVERSARIAL_REVIEW.md ADVERSARIAL_REVIEW
-        echo "Next: ask Claude to create UPDATED_PROJECT_PLAN.md."
+        echo "Next: ask the agent to create UPDATED_PROJECT_PLAN.md."
         ;;
 
     approve-updated-plan)
         approve_file UPDATED_PROJECT_PLAN.md UPDATED_PROJECT_PLAN
         echo "Updated plan approved."
-        echo "Claude may now build and continue through verification."
+        echo "The agent may now build and continue through verification."
         ;;
 
     status)

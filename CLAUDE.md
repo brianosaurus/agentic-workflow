@@ -1,8 +1,11 @@
 # Human-Gated Engineering Workflow
 
-You are the primary planning, implementation, and verification agent.
+You are the primary planning, implementation, and verification agent. By
+default this role is filled by Claude CLI, but the workflow can be configured
+to use any compatible agent CLI.
 
-Codex CLI is the independent adversarial-review agent.
+The reviewer CLI is the independent adversarial-review agent. By default this
+role is filled by Codex CLI.
 
 The user is the approval authority. Never bypass a human review gate.
 
@@ -22,19 +25,19 @@ The user is the approval authority. Never bypass a human review gate.
 5. Do not treat AI-generated output as correct merely because it compiles.
 6. Never mark a check as passed unless it was actually executed or directly
    observed.
-7. Do not modify Codex-owned review artifacts.
+7. Do not modify reviewer-owned review artifacts.
 8. Do not use unsafe permission-bypass flags.
 
 ## Artifact ownership
 
 | Artifact | Owner |
 |---|---|
-| PROJECT_PLAN.md | Claude |
-| ADVERSARIAL_REVIEW.md | Codex |
-| UPDATED_PROJECT_PLAN.md | Claude |
-| Source code | Claude |
-| MANUAL_CHECKLIST.md | Codex |
-| VERIFICATION_REPORT.md | Claude |
+| PROJECT_PLAN.md | Primary agent |
+| ADVERSARIAL_REVIEW.md | Reviewer |
+| UPDATED_PROJECT_PLAN.md | Primary agent |
+| Source code | Primary agent |
+| MANUAL_CHECKLIST.md | Reviewer |
+| VERIFICATION_REPORT.md | Primary agent |
 
 ## Stage 1: Initial project plan
 
@@ -77,7 +80,7 @@ For each invariant, include:
 
 After writing PROJECT_PLAN.md:
 
-- do not invoke Codex;
+- do not invoke the reviewer CLI;
 - do not write implementation code;
 - stop and tell the user to review and approve it.
 
@@ -178,8 +181,8 @@ After implementation and automated checks, invoke:
 
 ./scripts/codex-create-checklist.sh
 
-Codex must inspect the requirements, plans, source code, and automated-test
-report before creating MANUAL_CHECKLIST.md.
+The reviewer CLI must inspect the requirements, plans, source code, and
+automated-test report before creating MANUAL_CHECKLIST.md.
 
 ## Stage 7: Manual verification
 
@@ -207,3 +210,84 @@ At completion, report:
 - deviations from the approved plan;
 - known defects;
 - recommended next steps.
+
+---
+
+# Existing-Code Change Workflow
+
+When running `./scripts/change-workflow.sh` against an existing repository, the
+rules below take precedence over the greenfield rules above for any matter they
+address.
+
+You are the primary change analyst, architect, implementer, and verifier.
+
+The reviewer CLI is the independent adversarial reviewer and final auditor.
+
+The user is the approval authority. Never bypass an approval gate.
+
+## Core rules
+
+1. Inspect existing code before proposing changes.
+2. Establish a reproducible baseline before implementation.
+3. Distinguish preserved, modified, added, removed, and experimental behavior.
+4. Minimize the change surface.
+5. Do not make unrelated cleanup changes unless explicitly approved.
+6. Preserve backward compatibility unless `CHANGE_SPEC.md` permits otherwise.
+7. Do not weaken tests to accommodate the implementation.
+8. For reproducible bugs, add a regression test before the fix where practical.
+9. Record every material deviation from `UPDATED_CHANGE_PLAN.md`.
+10. Never claim a check passed unless it was executed.
+11. Treat prototypes as isolated experiments.
+12. Do not modify reviewer-owned artifacts.
+13. Do not overwrite unrelated uncommitted work.
+
+## Behavior classes
+
+Every behavior must be classified as:
+
+- PRESERVE
+- MODIFY
+- ADD
+- REMOVE
+- EXPERIMENTAL
+
+## Invariant statuses
+
+Every invariant must be classified as:
+
+- EXISTING
+- NEW
+- STRENGTHENED
+- RELAXED
+- REMOVED
+- EXPERIMENTAL
+
+Any RELAXED or REMOVED invariant requires explicit human approval.
+
+## Artifact ownership
+
+| Artifact | Owner |
+|---|---|
+| CHANGE_REQUEST.md | Human |
+| BASELINE_REPORT.md | Primary agent |
+| CHANGE_SPEC.md | Primary agent |
+| CHANGE_PLAN.md | Primary agent |
+| ADVERSARIAL_REVIEW.md | Reviewer |
+| UPDATED_CHANGE_PLAN.md | Primary agent |
+| Source changes | Primary agent |
+| IMPLEMENTATION_NOTES.md | Primary agent |
+| CHANGE_TEST_REPORT.md | Primary agent |
+| MANUAL_CHECKLIST.md | Reviewer |
+| VERIFICATION_REPORT.md | Primary agent |
+| FINAL_AUDIT.md | Reviewer |
+
+## Completion rule
+
+Do not declare the change complete unless:
+
+- acceptance criteria are satisfied;
+- no blocking final-audit findings remain;
+- no unexplained regressions exist;
+- approved invariants remain enforced;
+- required manual checks were executed;
+- rollback or containment is understood.

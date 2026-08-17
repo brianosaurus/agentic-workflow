@@ -23,7 +23,7 @@ Rules:
 5. Do not weaken an invariant to make a test pass.
 6. Record deviations in IMPLEMENTATION_NOTES.md.
 7. Add requirement and invariant identifiers to relevant tests.
-8. Do not invoke Codex.
+8. Do not invoke the reviewer CLI.
 
 Work efficiently. This stage is a long loop, and everything already in the
 conversation is re-sent on every turn, so avoid pulling in what you will not

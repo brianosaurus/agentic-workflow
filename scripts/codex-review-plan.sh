@@ -17,7 +17,9 @@ if [[ "$expected" != "$actual" ]]; then
     exit 1
 fi
 
-codex exec \
+REVIEWER_CMD="${WORKFLOW_REVIEWER_CMD:-codex}"
+
+"$REVIEWER_CMD" exec \
     --ephemeral \
     --sandbox read-only \
     --output-last-message ADVERSARIAL_REVIEW.md \
